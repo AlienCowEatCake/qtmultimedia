@@ -53,8 +53,7 @@ ios|tvos {
     }
     LIBS += -framework Foundation
 } else {
-    INCLUDEPATH += $$[QT_INSTALL_HEADERS]
-    LIBS += -framework AppKit -framework Metal
+    LIBS += -framework AppKit
 
     qtConfig(opengl) {
         HEADERS += \
