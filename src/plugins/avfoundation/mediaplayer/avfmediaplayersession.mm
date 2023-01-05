@@ -110,12 +110,6 @@ static void *AVFMediaPlayerSessionObserverCurrentItemDurationObservationContext 
 
     self->m_session = session;
     self->m_bufferIsLikelyToKeepUp = FALSE;
-
-    m_playerLayer = [AVPlayerLayer playerLayerWithPlayer:nil];
-    [m_playerLayer retain];
-    m_playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    m_playerLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
-
     return self;
 }
 
@@ -181,6 +175,10 @@ static void *AVFMediaPlayerSessionObserverCurrentItemDurationObservationContext 
         [m_player removeObserver:self forKeyPath:AVF_RATE_KEY];
         [m_player release];
         m_player = 0;
+    }
+    if (m_playerLayer) {
+        [m_playerLayer release];
+        m_playerLayer = 0;
     }
 }
 
@@ -266,8 +264,14 @@ static void *AVFMediaPlayerSessionObserverCurrentItemDurationObservationContext 
         [m_player setMuted:m_session->isMuted()];
     }
 
-    //Assign the output layer to the new player
-    m_playerLayer.player = m_player;
+    //Create a new player layer if we don't have one already
+    if (!m_playerLayer)
+    {
+        m_playerLayer = [AVPlayerLayer playerLayerWithPlayer:m_player];
+        [m_playerLayer retain];
+        m_playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        m_playerLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
+    }
 
     //Observe the AVPlayer "currentItem" property to find out when any
     //AVPlayer replaceCurrentItemWithPlayerItem: replacement will/did
@@ -413,7 +417,6 @@ static void *AVFMediaPlayerSessionObserverCurrentItemDurationObservationContext 
     }
 
     [m_mimeType release];
-    [m_playerLayer release];
     [super dealloc];
 }
 
