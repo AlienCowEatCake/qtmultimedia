@@ -41,8 +41,6 @@
 #define AVFVIDEORENDERERCONTROL_H
 
 #include <QtMultimedia/QVideoRendererControl>
-#include <QtMultimedia/qabstractvideobuffer.h>
-
 #include <QtCore/QMutex>
 #include <QtCore/QSize>
 
@@ -84,7 +82,8 @@ private:
 
     AVFVideoFrameRenderer *m_frameRenderer;
     AVFDisplayLink *m_displayLink;
-    QAbstractVideoBuffer::HandleType m_surfaceType = QAbstractVideoBuffer::NoHandle;
+    QSize m_nativeSize;
+    bool m_enableOpenGL;
 };
 
 QT_END_NAMESPACE
