@@ -39,23 +39,34 @@ OBJECTIVE_SOURCES += \
             avfvideowidget.mm
     }
 
-qtConfig(opengl) {
-    HEADERS += \
-        avfvideoframerenderer.h \
-        avfvideorenderercontrol.h \
-        avfdisplaylink.h
-
-    OBJECTIVE_SOURCES += \
-        avfvideoframerenderer.mm \
-        avfvideorenderercontrol.mm \
-        avfdisplaylink.mm
-}
-
 ios|tvos {
+    qtConfig(opengl) {
+        HEADERS += \
+            avfvideoframerenderer_ios.h \
+            avfvideorenderercontrol.h \
+            avfdisplaylink.h
+
+        OBJECTIVE_SOURCES += \
+            avfvideoframerenderer_ios.mm \
+            avfvideorenderercontrol.mm \
+            avfdisplaylink.mm
+    }
     LIBS += -framework Foundation
 } else {
     INCLUDEPATH += $$[QT_INSTALL_HEADERS]
     LIBS += -framework AppKit -framework Metal
+
+    qtConfig(opengl) {
+        HEADERS += \
+            avfvideoframerenderer.h \
+            avfvideorenderercontrol.h \
+            avfdisplaylink.h
+
+        OBJECTIVE_SOURCES += \
+            avfvideoframerenderer.mm \
+            avfvideorenderercontrol.mm \
+            avfdisplaylink.mm
+    }
 }
 
 OTHER_FILES += \
