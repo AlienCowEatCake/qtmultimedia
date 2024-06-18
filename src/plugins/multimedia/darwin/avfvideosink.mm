@@ -201,7 +201,9 @@ void AVFVideoSinkInterface::setOutputSettings()
            @(kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange),
            @(kCVPixelFormatType_420YpCbCr10BiPlanarFullRange),
            @(kCVPixelFormatType_OneComponent8),
+#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(110000)
            @(kCVPixelFormatType_OneComponent16),
+#endif
            @(kCVPixelFormatType_420YpCbCr8Planar),
            @(kCVPixelFormatType_420YpCbCr8PlanarFullRange)
        ]
