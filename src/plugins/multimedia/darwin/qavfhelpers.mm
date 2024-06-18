@@ -25,7 +25,9 @@ constexpr std::tuple<CvPixelFormat, PixelFormat, ColorRange> PixelFormatMap[] = 
     { kCVPixelFormatType_422YpCbCr8, PixelFormat::Format_UYVY, ColorRange::ColorRange_Video },
     { kCVPixelFormatType_422YpCbCr8_yuvs, PixelFormat::Format_YUYV, ColorRange::ColorRange_Video },
     { kCVPixelFormatType_OneComponent8, PixelFormat::Format_Y8, ColorRange::ColorRange_Unknown },
+#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(110000)
     { kCVPixelFormatType_OneComponent16, PixelFormat::Format_Y16, ColorRange::ColorRange_Unknown },
+#endif
 
     // The cases with kCMVideoCodecType_JPEG/kCMVideoCodecType_JPEG_OpenDML as cv pixel format should be investigated.
     // Matching kCMVideoCodecType_JPEG_OpenDML to ColorRange_Full is a little hack to distinguish between

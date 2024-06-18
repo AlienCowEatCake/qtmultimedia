@@ -44,7 +44,7 @@ void printUnableToReadWarning(const char *logName, AudioObjectID objectID, const
 
 inline static AudioObjectPropertyAddress
 makePropertyAddress(AudioObjectPropertySelector selector, QAudioDevice::Mode mode,
-                    AudioObjectPropertyElement element = kAudioObjectPropertyElementMain)
+                    AudioObjectPropertyElement element = kAudioObjectPropertyElementMaster)
 {
     return { selector,
              mode == QAudioDevice::Input ? kAudioDevicePropertyScopeInput
