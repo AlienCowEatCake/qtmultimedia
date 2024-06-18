@@ -42,7 +42,7 @@ static AudioDeviceID defaultAudioDevice(QAudioDevice::Mode mode)
     const AudioObjectPropertyAddress propertyAddress = {
         selector,
         kAudioObjectPropertyScopeGlobal,
-        kAudioObjectPropertyElementMain,
+        kAudioObjectPropertyElementMaster,
     };
 
     if (auto audioDevice = getAudioObject<AudioDeviceID>(kAudioObjectSystemObject, propertyAddress,
@@ -77,7 +77,7 @@ static QList<QAudioDevice> availableAudioDevices(QAudioDevice::Mode mode)
 
     const AudioObjectPropertyAddress audioDevicesPropertyAddress = {
         kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal,
-        kAudioObjectPropertyElementMain
+        kAudioObjectPropertyElementMaster
     };
 
     if (auto audioDevices = getAudioData<AudioDeviceID>(
@@ -130,11 +130,11 @@ static OSStatus audioDeviceChangeListener(AudioObjectID id, UInt32,
 
 static constexpr AudioObjectPropertyAddress listenerAddresses[] = {
     { kAudioHardwarePropertyDefaultInputDevice, kAudioObjectPropertyScopeGlobal,
-      kAudioObjectPropertyElementMain },
+      kAudioObjectPropertyElementMaster },
     { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal,
-      kAudioObjectPropertyElementMain },
+      kAudioObjectPropertyElementMaster },
     { kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal,
-      kAudioObjectPropertyElementMain }
+      kAudioObjectPropertyElementMaster }
 };
 
 static void setAudioListeners(QDarwinMediaDevices &instance)
