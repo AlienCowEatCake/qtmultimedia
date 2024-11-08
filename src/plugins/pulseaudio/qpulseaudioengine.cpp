@@ -40,6 +40,8 @@
 #include <QtCore/qdebug.h>
 
 #include <qaudiodeviceinfo.h>
+#include <QGuiApplication>
+#include <QIcon>
 #include "qpulseaudioengine.h"
 #include "qaudiodeviceinfo_pulse.h"
 #include "qaudiooutput_pulse.h"
@@ -289,7 +291,18 @@ void QPulseAudioEngine::prepare()
 
     lock();
 
-    m_context = pa_context_new(m_mainLoopApi, QString(QLatin1String("QtPulseAudio:%1")).arg(::getpid()).toLatin1().constData());
+    pa_proplist *proplist = pa_proplist_new();
+    if (!QGuiApplication::applicationDisplayName().isEmpty())
+        pa_proplist_sets(proplist, PA_PROP_APPLICATION_NAME, qUtf8Printable(QGuiApplication::applicationDisplayName()));
+    if (!QGuiApplication::desktopFileName().isEmpty())
+        pa_proplist_sets(proplist, PA_PROP_APPLICATION_ID, qUtf8Printable(QGuiApplication::desktopFileName()));
+
+    const QString windowIconName = QGuiApplication::windowIcon().name();
+    if (!windowIconName.isEmpty())
+        pa_proplist_sets(proplist, PA_PROP_WINDOW_ICON_NAME, qUtf8Printable(windowIconName));
+
+    m_context = pa_context_new_with_proplist(m_mainLoopApi, nullptr, proplist);
+    pa_proplist_free(proplist);
 
     if (m_context == 0) {
         qWarning("PulseAudioService: Unable to create new pulseaudio context");
